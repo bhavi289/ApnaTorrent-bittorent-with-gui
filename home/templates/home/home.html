@@ -1,0 +1,5 @@
+<!-- <h1>GUGU</h1> -->
+<form action="{% url 'home:home' %}" method="POST">
+{% csrf_token %}	
+	<input type="submit" value="start downloading torrent">
+</form>
