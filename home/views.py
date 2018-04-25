@@ -4,9 +4,11 @@ import subprocess
 from threading import Thread
 from Scripts.main import start_downoading
 import threading, traceback
+from multiprocessing import Process
 # Create your views here.
 
-torrent_download = threading.Thread(target=start_downoading)
+# torrent_download = threading.Thread(target=start_downoading)
+torrent_download = Process(target=start_downoading)
 def Home(request):
 
 	# output = script_function() 
@@ -26,7 +28,8 @@ def Home(request):
 def Downloading(request):
 	if request.method == 'POST':
 		print "Stop Thread"
-		torrent_download.exit()
+		torrent_download.terminate()
+		return HttpResponse("Stopped Downloading!")
 
 def script_function():
 	print subprocess
