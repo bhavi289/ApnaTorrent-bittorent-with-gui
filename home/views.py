@@ -5,6 +5,9 @@ from threading import Thread
 from Scripts.main import start_downoading
 import threading, traceback
 from multiprocessing import Process
+from .models import *
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 # torrent_download = threading.Thread(target=start_downoading)
@@ -37,3 +40,10 @@ def script_function():
   # return subprocess.call(['subprocess.py'])
 
   # return subprocess.check_call(['/Scripts/main.py'])
+
+def DownloadPercentage(request):
+	if request.method == 'GET':
+		obj = get_object_or_404(TorrentDownload, id=1)
+		print "in view",obj
+		return obj.percentage
+
