@@ -1,5 +1,6 @@
 <!-- <h1>GUGU</h1> -->
-<form action="{% url 'home:home' %}" method="POST">
+<form action="{% url 'home:home' %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}	
+	<input type="file" name="file">
 	<input type="submit" value="start downloading torrent">
 </form>

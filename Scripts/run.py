@@ -1,5 +1,8 @@
 import Manage_torrent_peers
 import logging
+from django.shortcuts import get_object_or_404
+
+from home.models import *
 
 class Run(object):
     
@@ -52,6 +55,18 @@ class Run(object):
                     continue
 
                 old = b
+                print "Stats\n"
+                if(TorrentDownload.objects.all().count==0):
+                    obj = TorrentDownload()
+                    obj.percentage = str((float(b) / self.torrent_information.totalLength)*100)
+                    print "obj=",obj
+                    obj.save()
+                else:
+                    obj = get_object_or_404(TorrentDownload, id=1)
+                    obj.percentage = str((float(b) / self.torrent_information.totalLength)*100)
+                    obj.save()
+                    print "obj=",obj
+                    
                 print "Number of peers: ",len(self.manageTorrentPeers.unchokedPeers)," Completed: ",float((float(b) / self.torrent_information.totalLength)*100),"%"
 
             import time

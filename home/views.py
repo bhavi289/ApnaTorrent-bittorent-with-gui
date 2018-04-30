@@ -5,12 +5,17 @@ from threading import Thread
 from Scripts.main import start_downoading
 import threading, traceback
 from multiprocessing import Process
+from .models import *
+from django.shortcuts import get_object_or_404
+import signal
+import psutil, time
+from django.core.files.base import ContentFile
 # Create your views here.
 
 # torrent_download = threading.Thread(target=start_downoading)
-torrent_download = Process(target=start_downoading)
+torrent_download = Process(target=start_downoading,  kwargs={})
 def Home(request):
-
+	import os
 	# output = script_function() 
 	# return HttpResponse(output)
 	if request.method == 'GET':
@@ -18,6 +23,26 @@ def Home(request):
 	elif request.method == 'POST':
 		print "POST Successfull"
 		# torrent_download = threading.Thread(target=start_downoading)
+	 	torrent_download.daemon = True
+	 	torrent_download.start()
+
+	 	folder = 'Scripts/' #request.path.replace("/", "_")
+	 	uploaded_filename = request.FILES['file'].name
+	 	BASE_PATH = '/home/bhavi/py_torrent_client/BittorentGui/'
+	 	full_filename = os.path.join(BASE_PATH, folder, uploaded_filename)
+	 	fout = open(full_filename, 'wb+')
+	 	file_content = ContentFile( request.FILES['file'].read() )
+	 	try:
+	 		for chunk in file_content.chunks():
+	 			fout.write(chunk)
+	 		fout.close()
+	 		# html = "<html><body>SAVED</body></html>"
+	 		# return HttpResponse(html)
+	 	except:
+	 		html = "<html><body>FILE NOT SAVED</body></html>"
+	 		return HttpResponse(html)
+
+
 	 	torrent_download.daemon = True
 	 	torrent_download.start()
 	 	return render(request,'home/downloading.html')
@@ -37,3 +62,31 @@ def script_function():
   # return subprocess.call(['subprocess.py'])
 
   # return subprocess.check_call(['/Scripts/main.py'])
+
+def DownloadPercentage(request):
+	print "GET"
+	if request.method == 'GET':
+		obj = TorrentDownload.objects.filter(id=1)
+		print "in view",obj
+		if(obj.count>0):
+			return render(request, 'home/percentage.html',{"object":obj})
+		else:
+			return
+
+def Pause(request):
+	print "pause"
+	if request.method == 'POST':
+		psProcess = psutil.Process(pid=torrent_download.pid)
+		psProcess.suspend()
+		time.sleep(1000000);
+		print "paused"
+		return render(request,'home/downloading.html')
+
+
+def Play(request):
+	print "play"
+	if request.method == 'POST':
+		psProcess = psutil.Process(pid=torrent_download.pid)
+		psProcess.resume()
+		print "resumed"
+		return render(request,'home/downloading.html')

@@ -1,5 +1,38 @@
 <!-- <h1>GUGU</h1> -->
+
 <form action="{% url 'home:downloading' %}" method="POST">
 {% csrf_token %}	
 	<input type="submit" value="stop downloading torrent">
 </form>
+<form action="{% url 'home:pause' %}" method="POST">
+{% csrf_token %}	
+	<input type="submit" value="Pause Torrent">
+</form>
+<form action="{% url 'home:play' %}" method="POST">
+{% csrf_token %}	
+	<input type="submit" value="Play Torrent">
+</form>
+Download Percentage-
+<p id="percentage">
+
+</p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+	console.log("Script");
+
+	setInterval(function() {
+		console.log("interval working");
+        $.ajax({
+            type: "GET",
+            url: "{% url 'home:download-percentage' %}",  
+            // data: {'append_increment': append_increment}
+        })
+        .done(function(response) {
+        	console.log(response);
+            $('#percentage').html(response);
+        });
+    }, 1000)
+});
+</script>
