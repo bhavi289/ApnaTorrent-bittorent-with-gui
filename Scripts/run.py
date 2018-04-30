@@ -6,7 +6,7 @@ from home.models import *
 
 class Run(object):
     
-    def __init__(self):
+    def __init__(self, file_name):
         import Queue
         import Torrent_info
 
@@ -14,6 +14,9 @@ class Run(object):
         import Torrent_trackers 
         import Manage_torrent_pieces
         import Seek_torrent_peers
+        print "FILENAME IN INIT ", file_name
+        file_path = "Scripts/"+file_name
+        print file_path
         self.torrent_information = Torrent_info.torrent_info("Scripts/1.torrent")
         self.torrent_tracker = Torrent_trackers.Torrent_trackers(self.torrent_information,queue_of_new_peers)
 

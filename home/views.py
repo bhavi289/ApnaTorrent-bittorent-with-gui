@@ -13,7 +13,6 @@ from django.core.files.base import ContentFile
 # Create your views here.
 
 # torrent_download = threading.Thread(target=start_downoading)
-torrent_download = Process(target=start_downoading,  kwargs={})
 def Home(request):
 	import os
 	# output = script_function() 
@@ -23,8 +22,8 @@ def Home(request):
 	elif request.method == 'POST':
 		print "POST Successfull"
 		# torrent_download = threading.Thread(target=start_downoading)
-	 	torrent_download.daemon = True
-	 	torrent_download.start()
+	 	# torrent_download.daemon = True
+	 	# torrent_download.start()
 
 	 	folder = 'Scripts/' #request.path.replace("/", "_")
 	 	uploaded_filename = request.FILES['file'].name
@@ -32,6 +31,7 @@ def Home(request):
 	 	full_filename = os.path.join(BASE_PATH, folder, uploaded_filename)
 	 	fout = open(full_filename, 'wb+')
 	 	file_content = ContentFile( request.FILES['file'].read() )
+	 	print "File name", uploaded_filename
 	 	try:
 	 		for chunk in file_content.chunks():
 	 			fout.write(chunk)
@@ -42,7 +42,8 @@ def Home(request):
 	 		html = "<html><body>FILE NOT SAVED</body></html>"
 	 		return HttpResponse(html)
 
-
+	 	global torrent_download
+		torrent_download = Process(target=start_downoading,  kwargs={"file_name":uploaded_filename}) 	
 	 	torrent_download.daemon = True
 	 	torrent_download.start()
 	 	return render(request,'home/downloading.html')
