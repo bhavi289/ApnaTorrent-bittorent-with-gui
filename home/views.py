@@ -18,9 +18,11 @@ def Home(request):
 	# output = script_function() 
 	# return HttpResponse(output)
 	if request.method == 'GET':
+		obj=get_object_or_404(TorrentDownload, id=1)
+		obj.percentage=0
 		return render(request,'home/home.html')
 	elif request.method == 'POST':
-		print "POST Successfull"
+		# print "POST Successfull"
 		# torrent_download = threading.Thread(target=start_downoading)
 	 	# torrent_download.daemon = True
 	 	# torrent_download.start()
@@ -31,7 +33,7 @@ def Home(request):
 	 	full_filename = os.path.join(BASE_PATH, folder, uploaded_filename)
 	 	fout = open(full_filename, 'wb+')
 	 	file_content = ContentFile( request.FILES['file'].read() )
-	 	print "File name", uploaded_filename
+	 	# print "File name", uploaded_filename
 	 	try:
 	 		for chunk in file_content.chunks():
 	 			fout.write(chunk)
@@ -58,17 +60,17 @@ def Downloading(request):
 		return HttpResponse("Stopped Downloading!")
 
 def script_function():
-	print subprocess
+	# print subprocess
 	return subprocess.call(['python', 'Scripts/main.py'])
   # return subprocess.call(['subprocess.py'])
 
   # return subprocess.check_call(['/Scripts/main.py'])
 
 def DownloadPercentage(request):
-	print "GET"
+	# print "GET"
 	if request.method == 'GET':
 		obj = TorrentDownload.objects.filter(id=1)
-		print "in view",obj
+		# print "in view",obj
 		if(obj.count>0):
 			return render(request, 'home/percentage.html',{"object":obj})
 		else:

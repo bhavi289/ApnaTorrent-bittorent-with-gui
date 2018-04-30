@@ -1,7 +1,7 @@
 <!-- <h1>GUGU</h1> -->
 <form action="{% url 'home:home' %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}	
-	<input type="file" name="file" onchange="fileValidation(this)">
+	<input type="file" name="file" onchange="fileValidation(this)" required>
 	<input type="submit" value="start downloading torrent">
 </form>
 <script type="text/javascript">

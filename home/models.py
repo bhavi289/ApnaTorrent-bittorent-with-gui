@@ -6,6 +6,7 @@ from django.db import models
 
 class TorrentDownload(models.Model):
 	percentage=models.CharField(null=True,max_length=3)
+	peers=models.CharField(null=True,max_length=10000)
 	
 	def __str__(self):
 		return self.percentage

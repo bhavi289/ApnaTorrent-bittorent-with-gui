@@ -19,11 +19,18 @@ Download Percentage-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-$( document ).ready(function() {
+// $( document ).ready(function() {
+
 	console.log("Script");
 
 	setInterval(function() {
-		console.log("interval working");
+		console.log(parseInt($('#percentage').html()));
+		k=parseInt($('#percentage').html());
+		if(k==100 || k==99){
+			alert("Completed");
+			window.location.href='/home/'
+		}
+		// console.log("interval working");
         $.ajax({
             type: "GET",
             url: "{% url 'home:download-percentage' %}",  
@@ -34,5 +41,5 @@ $( document ).ready(function() {
             $('#percentage').html(response);
         });
     }, 1000)
-});
+// });
 </script>

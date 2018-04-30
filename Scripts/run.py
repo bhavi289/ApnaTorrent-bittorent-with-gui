@@ -17,7 +17,7 @@ class Run(object):
         print "FILENAME IN INIT ", file_name
         file_path = "Scripts/"+file_name
         print file_path
-        self.torrent_information = Torrent_info.torrent_info("Scripts/1.torrent")
+        self.torrent_information = Torrent_info.torrent_info(file_path)
         self.torrent_tracker = Torrent_trackers.Torrent_trackers(self.torrent_information,queue_of_new_peers)
 
         self.seek_torrent_peer = Seek_torrent_peers.Seek_torrent_peers(queue_of_new_peers, self.torrent_information)
