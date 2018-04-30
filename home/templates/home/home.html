@@ -4,6 +4,12 @@
 	<input type="file" name="file" onchange="fileValidation(this)" required>
 	<input type="submit" value="start downloading torrent">
 </form>
+
+<form action="{% url 'home:magnet-link' %}" method="POST">
+{% csrf_token %}	
+	<input type="text" name="magnet" required>
+	<input type="submit" value="start downloading torrent">
+</form>
 <script type="text/javascript">
 	var _validFileExtensions = [".torrent"];    
 	function fileValidation(oInput) {

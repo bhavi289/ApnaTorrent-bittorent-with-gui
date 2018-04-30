@@ -62,11 +62,13 @@ class Run(object):
                 if(TorrentDownload.objects.all().count==0):
                     obj = TorrentDownload()
                     obj.percentage = str((float(b) / self.torrent_information.totalLength)*100)
+                    obj.peers=str(len(self.manageTorrentPeers.unchokedPeers))
                     print "obj=",obj
                     obj.save()
                 else:
                     obj = get_object_or_404(TorrentDownload, id=1)
                     obj.percentage = str((float(b) / self.torrent_information.totalLength)*100)
+                    obj.peers=str(len(self.manageTorrentPeers.unchokedPeers))
                     obj.save()
                     print "obj=",obj
                     

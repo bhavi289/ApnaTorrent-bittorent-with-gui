@@ -19,7 +19,9 @@ def Home(request):
 	# return HttpResponse(output)
 	if request.method == 'GET':
 		obj=get_object_or_404(TorrentDownload, id=1)
-		obj.percentage=0
+		obj.percentage='0'
+		obj.peers='0'
+		obj.save()
 		return render(request,'home/home.html')
 	elif request.method == 'POST':
 		# print "POST Successfull"
@@ -93,3 +95,24 @@ def Play(request):
 		psProcess.resume()
 		print "resumed"
 		return render(request,'home/downloading.html')
+
+def MagnetLink(request):
+	if request.method == 'POST':
+		magnet=request.POST.get('magnet')
+		# print "Starting Convesion for magnet", magnet
+		command = "python3 Scripts/manage.py '"+magnet+"'"
+		# print "command is ",command
+		# subprocess.call("ls")
+		s=subprocess.call(['python', 'Scripts/magnet.py', str(magnet)], shell=False)
+		f=open("Scripts/magnet-name.txt","r")
+		name=f.readline()
+		print "name=",name
+		global torrent_download
+		torrent_download = Process(target=start_downoading,  kwargs={"file_name":name}) 	
+	 	torrent_download.daemon = True
+	 	torrent_download.start()
+	 	return render(request,'home/downloading.html')
+
+		# print "sss",s
+		return HttpResponse("done")
+		# subprocess.call('python3 magnet.py "hi"')

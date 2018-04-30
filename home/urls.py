@@ -7,5 +7,8 @@ urlpatterns = [
     url(r'^downloading', views.Downloading, name='downloading'), 
     url(r'^download-percentage', views.DownloadPercentage, name='download-percentage'), 
     url(r'^pause', views.Pause, name='pause'), 
-    url(r'^play', views.Play, name='play'), 
+    url(r'^play', views.Play, name='play'),
+    url(r'^magnet-link', views.MagnetLink, name='magnet-link'), 
+
+    
 ]
