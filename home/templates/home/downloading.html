@@ -20,19 +20,45 @@ Total Number Of Peers Right Now
 <p id="peers">
 
 </p> -->
+<style>
+#myProgress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: #4CAF50;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 // $( document ).ready(function() {
 
 	console.log("Script");
-
+    var width = 0;
 	setInterval(function() {
-		console.log(parseInt($('#percentage').html()));
-		k=parseInt($('#percentage').html());
-		if(k==100 || k==99){
+        k=parseInt($('#percentage').val());
+        p=$('#percentage').val()
+		console.log(parseInt($('#percentage').val()));
+
+		if(k==99){
 			alert("Download Completed");
 			window.location.href='/home/'
 		}
+        var elem = document.getElementById("myBar");   
+        console.log("k=",k);
+
+        if (width >= 100) {
+          clearInterval(id);
+        } 
+        else {
+          width=p; 
+          console.log("width2=",width);
+          elem.style.width = width + '%'; 
+        }
+
 		// console.log("interval working");
         $.ajax({
             type: "GET",
@@ -51,6 +77,11 @@ Total Number Of Peers Right Now
     }, 1000)
 // });
 </script>
+
+
+<div id="myProgress">
+  <div id="myBar"></div>
+</div>
 
 
 <!DOCTYPE html>
@@ -96,7 +127,7 @@ Total Number Of Peers Right Now
                     </div>
                 <!-- <form  class="contact3-form validate-form"> -->
                     <div class="wrap-input3 validate-input" data-validate="Name is required">
-                        Download Percentage-
+                        Download Percentage
                         <input class="input3" id="percentage" value="" type="text" name="magnet" readonly>
 
                         <!-- <p id="percentage">
@@ -104,7 +135,7 @@ Total Number Of Peers Right Now
                         </p> -->
                     </div>
                     <div class="wrap-input3 validate-input" data-validate="Name is required">
-                        Total Number Of Peers Right Now
+                        Last Active Number Of Peers
                         <input class="input3" id="peers" value="" type="text" name="magnet" readonly>
                        <!--  <p id="peers">
 
