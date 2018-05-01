@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 import signal
 import psutil, time
 from django.core.files.base import ContentFile
+from django.core.urlresolvers import reverse
 # Create your views here.
 
 # torrent_download = threading.Thread(target=start_downoading)
@@ -21,6 +22,7 @@ def Home(request):
 		obj=get_object_or_404(TorrentDownload, id=1)
 		obj.percentage='0'
 		obj.peers='0'
+		print obj
 		obj.save()
 		return render(request,'home/home.html')
 	elif request.method == 'POST':
@@ -59,7 +61,7 @@ def Downloading(request):
 	if request.method == 'POST':
 		print "Stop Thread"
 		torrent_download.terminate()
-		return HttpResponse("Stopped Downloading!")
+		return HttpResponseRedirect(reverse('home:home'))
 
 def script_function():
 	# print subprocess
